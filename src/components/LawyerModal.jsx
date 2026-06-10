@@ -107,18 +107,18 @@ function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
   const licenceNumber = getLicenceNumber(lawyer);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-950/75 px-4 py-6 backdrop-blur-sm">
-      <section className="w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-2xl ring-1 ring-white/20">
-        <div className="flex items-start justify-between gap-4 border-b border-gray-200 bg-gray-950 px-6 py-5">
-          <div className="flex items-center gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-sm font-black text-white">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-gray-950/75 px-3 py-3 backdrop-blur-sm sm:items-center sm:px-4 sm:py-6">
+      <section className="max-h-[92vh] w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-2xl ring-1 ring-white/20">
+        <div className="flex items-start justify-between gap-4 border-b border-gray-200 bg-gray-950 px-4 py-4 sm:px-6 sm:py-5">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-sm font-black text-white sm:h-12 sm:w-12">
               {getLawyerName(lawyer).slice(0, 1).toUpperCase()}
             </span>
-            <div>
-              <p className="text-sm font-bold uppercase tracking-wide text-blue-300">
+            <div className="min-w-0">
+              <p className="text-xs font-bold uppercase tracking-wide text-blue-300 sm:text-sm">
                 Lawyer Profile
               </p>
-              <h2 className="mt-1 text-2xl font-black text-white">
+              <h2 className="mt-1 truncate text-xl font-black text-white sm:text-2xl">
                 {getLawyerName(lawyer)}
               </h2>
             </div>
@@ -133,7 +133,7 @@ function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
           </button>
         </div>
 
-        <div className="px-6 py-5">
+        <div className="max-h-[calc(92vh-144px)] overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
           <dl className="grid gap-4 sm:grid-cols-2">
             <DetailRow label="Name" value={getLawyerName(lawyer)} />
             <DetailRow label="Email" value={lawyer.email || "N/A"} />
@@ -173,7 +173,7 @@ function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
           </div>
         </div>
 
-        <div className="flex flex-col-reverse gap-3 border-t border-gray-200 bg-gray-50 px-6 py-4 sm:flex-row sm:justify-end">
+        <div className="flex flex-col-reverse gap-3 border-t border-gray-200 bg-gray-50 px-4 py-4 sm:flex-row sm:justify-end sm:px-6">
           <button
             className="rounded-md bg-green-600 px-4 py-2.5 text-sm font-black text-white shadow-sm transition hover:bg-green-700"
             type="button"
