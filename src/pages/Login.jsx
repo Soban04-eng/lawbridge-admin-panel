@@ -21,18 +21,18 @@ function Login() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-950 px-4 py-10">
+    <main className="flex min-h-screen items-center justify-center bg-gray-950 px-4 py-6 sm:py-10">
       <section className="w-full max-w-md overflow-hidden rounded-lg bg-gray-900 shadow-2xl ring-1 ring-white/10">
-        <div className="border-b border-white/10 bg-gray-900 px-8 py-7">
+        <div className="border-b border-white/10 bg-gray-900 px-5 py-6 sm:px-8 sm:py-7">
           <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 text-lg font-black text-white shadow-lg shadow-blue-950/40">
             LB
           </div>
-          <h1 className="text-center text-3xl font-bold text-white">
+          <h1 className="text-center text-2xl font-bold text-white sm:text-3xl">
             LawBridge Admin Panel
           </h1>
         </div>
 
-        <form className="space-y-5 px-8 py-8" onSubmit={handleSubmit}>
+        <form className="space-y-5 px-5 py-6 sm:px-8 sm:py-8" onSubmit={handleSubmit}>
           <label className="block">
             <span className="text-sm font-semibold text-gray-200">Username</span>
             <input
