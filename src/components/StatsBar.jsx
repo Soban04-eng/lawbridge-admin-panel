@@ -83,9 +83,9 @@ const statCards = [
     key: "total",
     label: "Total Lawyers",
     Icon: UsersIcon,
-    borderClass: "border-l-blue-500",
-    iconClass: "bg-blue-50 text-blue-700 ring-blue-100",
-    numberClass: "text-blue-700",
+    borderClass: "border-l-[#0f6b4a]",
+    iconClass: "bg-[#e9f4ef] text-[#0f6b4a] ring-emerald-900/10",
+    numberClass: "text-[#0f6b4a]",
   },
   {
     key: "pending",
@@ -99,9 +99,9 @@ const statCards = [
     key: "approved",
     label: "Approved",
     Icon: CheckIcon,
-    borderClass: "border-l-green-500",
-    iconClass: "bg-green-50 text-green-700 ring-green-100",
-    numberClass: "text-green-700",
+    borderClass: "border-l-[#0f6b4a]",
+    iconClass: "bg-[#e9f4ef] text-[#0f6b4a] ring-emerald-900/10",
+    numberClass: "text-[#0f6b4a]",
   },
   {
     key: "rejected",
@@ -198,7 +198,7 @@ function StatsBar() {
 
         return (
           <article
-            className={`rounded-lg border-l-4 bg-white p-5 shadow-sm ring-1 ring-gray-200 transition hover:-translate-y-0.5 hover:shadow-md ${stat.borderClass}`}
+            className={`rounded-lg border-l-4 bg-white p-5 shadow-sm ring-1 ring-emerald-900/10 transition hover:-translate-y-0.5 hover:shadow-md ${stat.borderClass}`}
             key={stat.label}
           >
             <div className="flex items-center justify-between gap-4">
@@ -206,7 +206,7 @@ function StatsBar() {
                 <p className={`text-4xl font-black ${stat.numberClass}`}>
                   {stats[stat.key]}
                 </p>
-                <p className="mt-1 text-sm font-bold text-gray-500">
+                <p className="mt-1 text-sm font-bold text-[#0f6b4a]/70">
                   {stat.label}
                 </p>
               </div>
