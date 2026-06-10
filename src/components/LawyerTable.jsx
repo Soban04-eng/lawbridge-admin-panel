@@ -207,24 +207,24 @@ function LawyerTable() {
   return (
     <>
       {toast && (
-        <div className="fixed left-3 right-3 top-3 z-[60] rounded-lg bg-gray-950 px-4 py-3 text-center text-sm font-bold text-white shadow-xl ring-1 ring-white/10 sm:left-auto sm:right-4 sm:top-4 sm:text-left">
+        <div className="fixed left-3 right-3 top-3 z-[60] rounded-lg bg-[#0f6b4a] px-4 py-3 text-center text-sm font-bold text-white shadow-xl ring-1 ring-white/10 sm:left-auto sm:right-4 sm:top-4 sm:text-left">
           {toast}
         </div>
       )}
 
-      <section className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-200">
-        <div className="border-b border-gray-200 bg-white px-4 py-4 sm:px-5 sm:py-5">
+      <section className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-emerald-900/10">
+        <div className="border-b border-emerald-900/10 bg-white px-4 py-4 sm:px-5 sm:py-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h2 className="text-lg font-black text-gray-950">
+              <h2 className="text-lg font-black text-[#0f6b4a]">
                 Lawyer Applications
               </h2>
-              <p className="mt-1 text-sm font-medium text-gray-500">
+              <p className="mt-1 text-sm font-medium text-[#0f6b4a]/70">
                 {filteredLawyers.length} visible of {mergedLawyers.length} profiles
               </p>
             </div>
             <input
-              className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-950 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100 lg:max-w-md"
+              className="w-full rounded-lg border border-[#7b9288] bg-[#f6fbf8] px-4 py-3 text-sm font-medium text-[#0f6b4a] outline-none transition placeholder:text-[#6aa18c] focus:border-[#0f6b4a] focus:bg-white focus:ring-2 focus:ring-[#0f6b4a]/20 lg:max-w-md"
               type="search"
               placeholder="Search by name, email, licence number, or bar council"
               value={searchQuery}
@@ -240,8 +240,8 @@ function LawyerTable() {
                 <button
                   className={`rounded-lg px-3 py-2 text-sm font-bold transition sm:px-4 ${
                     isActive
-                      ? "bg-gray-950 text-white shadow-sm"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-[#0f6b4a] text-white shadow-sm"
+                      : "bg-[#e9f4ef] text-[#0f6b4a] hover:bg-[#dbece5]"
                   }`}
                   key={filter}
                   type="button"
@@ -266,38 +266,38 @@ function LawyerTable() {
 
             return (
               <article
-                className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+                className="rounded-lg border border-emerald-900/10 bg-white p-4 shadow-sm"
                 key={lawyer.id}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-900 text-xs font-black text-white">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#0f6b4a] text-xs font-black text-white">
                       {getLawyerName(lawyer).slice(0, 1).toUpperCase()}
                     </span>
                     <div className="min-w-0">
-                      <p className="truncate font-black text-gray-950">
+                      <p className="truncate font-black text-[#0f6b4a]">
                         {getLawyerName(lawyer)}
                       </p>
-                      <p className="truncate text-sm font-medium text-gray-500">
+                      <p className="truncate text-sm font-medium text-[#0f6b4a]/70">
                         {lawyer.email || "N/A"}
                       </p>
                     </div>
                   </div>
-                  <span className="text-sm font-black text-gray-400">
+                  <span className="text-sm font-black text-[#0f6b4a]/40">
                     #{index + 1}
                   </span>
                 </div>
 
                 <div className="mt-4 grid gap-3 text-sm">
                   <div>
-                    <p className="text-xs font-black uppercase tracking-wide text-gray-500">
+                    <p className="text-xs font-black uppercase tracking-wide text-[#0f6b4a]/60">
                       Licence No
                     </p>
                     <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <span className="font-bold text-gray-950">{licenceNumber}</span>
+                      <span className="font-bold text-[#0f6b4a]">{licenceNumber}</span>
                       {licenceNumber !== "N/A" && (
                         <button
-                          className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs font-bold text-gray-600 transition hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700"
+                          className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
                           type="button"
                           onClick={() => copyLicenceNumber(licenceNumber)}
                         >
@@ -309,18 +309,18 @@ function LawyerTable() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <p className="text-xs font-black uppercase tracking-wide text-gray-500">
+                      <p className="text-xs font-black uppercase tracking-wide text-[#0f6b4a]/60">
                         Bar Council
                       </p>
-                      <p className="mt-1 font-bold text-gray-800">
+                      <p className="mt-1 font-bold text-[#0f6b4a]">
                         {getBarCouncil(lawyer)}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-black uppercase tracking-wide text-gray-500">
+                      <p className="text-xs font-black uppercase tracking-wide text-[#0f6b4a]/60">
                         Registered
                       </p>
-                      <p className="mt-1 font-bold text-gray-800">
+                      <p className="mt-1 font-bold text-[#0f6b4a]">
                         {getRegisteredDate(lawyer)}
                       </p>
                     </div>
@@ -338,7 +338,7 @@ function LawyerTable() {
 
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   <button
-                    className="rounded-md bg-green-600 px-2 py-2 text-xs font-black text-white shadow-sm transition hover:bg-green-700"
+                    className="rounded-full bg-[#0f6b4a] px-2 py-2 text-xs font-black text-white shadow-sm transition hover:bg-[#0b573c]"
                     type="button"
                     onClick={() => approveLawyer(lawyer)}
                   >
@@ -352,7 +352,7 @@ function LawyerTable() {
                     ✗ Reject
                   </button>
                   <button
-                    className="rounded-md bg-blue-600 px-2 py-2 text-xs font-black text-white shadow-sm transition hover:bg-blue-700"
+                    className="rounded-full bg-[#167f5a] px-2 py-2 text-xs font-black text-white shadow-sm transition hover:bg-[#0f6b4a]"
                     type="button"
                     onClick={() => setSelectedLawyer(lawyer)}
                   >
@@ -364,15 +364,15 @@ function LawyerTable() {
           })}
 
           {filteredLawyers.length === 0 && (
-            <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-10 text-center text-sm font-bold text-gray-500">
+            <div className="rounded-lg border border-emerald-900/10 bg-[#e9f4ef] px-4 py-10 text-center text-sm font-bold text-[#0f6b4a]">
               No lawyers found.
             </div>
           )}
         </div>
 
         <div className="hidden overflow-x-auto md:block">
-          <table className="min-w-[1120px] divide-y divide-slate-200 text-left text-sm">
-            <thead className="bg-gray-50 text-xs font-black uppercase tracking-wide text-gray-500">
+          <table className="min-w-[1120px] divide-y divide-emerald-900/10 text-left text-sm">
+            <thead className="bg-[#e9f4ef] text-xs font-black uppercase tracking-wide text-[#0f6b4a]">
               <tr>
                 <th className="px-5 py-4">#</th>
                 <th className="px-5 py-4">Name</th>
@@ -384,40 +384,40 @@ function LawyerTable() {
                 <th className="px-5 py-4">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-emerald-900/10">
               {filteredLawyers.map((lawyer, index) => {
                 const status = getStatus(lawyer);
                 const licenceNumber = getLicenceNo(lawyer);
 
                 return (
                   <tr
-                    className="bg-white text-gray-700 transition odd:bg-white even:bg-gray-50 hover:bg-blue-50/70"
+                    className="bg-white text-[#0f6b4a] transition odd:bg-white even:bg-[#f6fbf8] hover:bg-[#e9f4ef]"
                     key={lawyer.id}
                   >
-                    <td className="px-5 py-4 font-bold text-gray-500">
+                    <td className="px-5 py-4 font-bold text-[#0f6b4a]/60">
                       {index + 1}
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-900 text-xs font-black text-white">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0f6b4a] text-xs font-black text-white">
                           {getLawyerName(lawyer).slice(0, 1).toUpperCase()}
                         </span>
-                        <span className="font-black text-gray-950">
+                        <span className="font-black text-[#0f6b4a]">
                           {getLawyerName(lawyer)}
                         </span>
                       </div>
                     </td>
-                    <td className="px-5 py-4 font-medium text-gray-600">
+                    <td className="px-5 py-4 font-medium text-[#0f6b4a]/75">
                       {lawyer.email || "N/A"}
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-gray-900">
+                        <span className="font-bold text-[#0f6b4a]">
                           {licenceNumber}
                         </span>
                         {licenceNumber !== "N/A" && (
                           <button
-                            className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs font-bold text-gray-600 transition hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700"
+                            className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
                             type="button"
                             onClick={() => copyLicenceNumber(licenceNumber)}
                             title="Copy licence number"
@@ -440,7 +440,7 @@ function LawyerTable() {
                     <td className="px-5 py-4">
                       <div className="flex flex-wrap gap-2">
                         <button
-                          className="rounded-md bg-green-600 px-3 py-2 text-xs font-black text-white shadow-sm transition hover:bg-green-700"
+                          className="rounded-full bg-[#0f6b4a] px-3 py-2 text-xs font-black text-white shadow-sm transition hover:bg-[#0b573c]"
                           type="button"
                           onClick={() => approveLawyer(lawyer)}
                         >
@@ -454,7 +454,7 @@ function LawyerTable() {
                           ✗ Reject
                         </button>
                         <button
-                          className="rounded-md bg-blue-600 px-3 py-2 text-xs font-black text-white shadow-sm transition hover:bg-blue-700"
+                          className="rounded-full bg-[#167f5a] px-3 py-2 text-xs font-black text-white shadow-sm transition hover:bg-[#0f6b4a]"
                           type="button"
                           onClick={() => setSelectedLawyer(lawyer)}
                         >
@@ -469,7 +469,7 @@ function LawyerTable() {
               {filteredLawyers.length === 0 && (
                 <tr>
                   <td
-                    className="px-5 py-12 text-center text-sm font-bold text-gray-500"
+                    className="px-5 py-12 text-center text-sm font-bold text-[#0f6b4a]"
                     colSpan="8"
                   >
                     No lawyers found.
