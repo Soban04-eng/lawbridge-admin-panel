@@ -207,13 +207,13 @@ function LawyerTable() {
   return (
     <>
       {toast && (
-        <div className="fixed right-4 top-4 z-[60] rounded-lg bg-gray-950 px-4 py-3 text-sm font-bold text-white shadow-xl ring-1 ring-white/10">
+        <div className="fixed left-3 right-3 top-3 z-[60] rounded-lg bg-gray-950 px-4 py-3 text-center text-sm font-bold text-white shadow-xl ring-1 ring-white/10 sm:left-auto sm:right-4 sm:top-4 sm:text-left">
           {toast}
         </div>
       )}
 
       <section className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-gray-200">
-        <div className="border-b border-gray-200 bg-white px-5 py-5">
+        <div className="border-b border-gray-200 bg-white px-4 py-4 sm:px-5 sm:py-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h2 className="text-lg font-black text-gray-950">
@@ -232,13 +232,13 @@ function LawyerTable() {
             />
           </div>
 
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
             {filters.map((filter) => {
               const isActive = activeFilter === filter;
 
               return (
                 <button
-                  className={`rounded-lg px-4 py-2 text-sm font-bold transition ${
+                  className={`rounded-lg px-3 py-2 text-sm font-bold transition sm:px-4 ${
                     isActive
                       ? "bg-gray-950 text-white shadow-sm"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -259,8 +259,119 @@ function LawyerTable() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+        <div className="grid gap-3 p-3 md:hidden">
+          {filteredLawyers.map((lawyer, index) => {
+            const status = getStatus(lawyer);
+            const licenceNumber = getLicenceNo(lawyer);
+
+            return (
+              <article
+                className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+                key={lawyer.id}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-900 text-xs font-black text-white">
+                      {getLawyerName(lawyer).slice(0, 1).toUpperCase()}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate font-black text-gray-950">
+                        {getLawyerName(lawyer)}
+                      </p>
+                      <p className="truncate text-sm font-medium text-gray-500">
+                        {lawyer.email || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-sm font-black text-gray-400">
+                    #{index + 1}
+                  </span>
+                </div>
+
+                <div className="mt-4 grid gap-3 text-sm">
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-wide text-gray-500">
+                      Licence No
+                    </p>
+                    <div className="mt-1 flex flex-wrap items-center gap-2">
+                      <span className="font-bold text-gray-950">{licenceNumber}</span>
+                      {licenceNumber !== "N/A" && (
+                        <button
+                          className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs font-bold text-gray-600 transition hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700"
+                          type="button"
+                          onClick={() => copyLicenceNumber(licenceNumber)}
+                        >
+                          Copy
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-wide text-gray-500">
+                        Bar Council
+                      </p>
+                      <p className="mt-1 font-bold text-gray-800">
+                        {getBarCouncil(lawyer)}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-wide text-gray-500">
+                        Registered
+                      </p>
+                      <p className="mt-1 font-bold text-gray-800">
+                        {getRegisteredDate(lawyer)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span
+                      className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-black ring-1 ${statusStyles[status]}`}
+                    >
+                      <span className="mr-1.5">{getStatusIcon(status)}</span>
+                      {status}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-4 grid grid-cols-3 gap-2">
+                  <button
+                    className="rounded-md bg-green-600 px-2 py-2 text-xs font-black text-white shadow-sm transition hover:bg-green-700"
+                    type="button"
+                    onClick={() => approveLawyer(lawyer)}
+                  >
+                    ✓ Approve
+                  </button>
+                  <button
+                    className="rounded-md bg-red-600 px-2 py-2 text-xs font-black text-white shadow-sm transition hover:bg-red-700"
+                    type="button"
+                    onClick={() => rejectLawyer(lawyer)}
+                  >
+                    ✗ Reject
+                  </button>
+                  <button
+                    className="rounded-md bg-blue-600 px-2 py-2 text-xs font-black text-white shadow-sm transition hover:bg-blue-700"
+                    type="button"
+                    onClick={() => setSelectedLawyer(lawyer)}
+                  >
+                    👁 View
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+
+          {filteredLawyers.length === 0 && (
+            <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-10 text-center text-sm font-bold text-gray-500">
+              No lawyers found.
+            </div>
+          )}
+        </div>
+
+        <div className="hidden overflow-x-auto md:block">
+          <table className="min-w-[1120px] divide-y divide-slate-200 text-left text-sm">
             <thead className="bg-gray-50 text-xs font-black uppercase tracking-wide text-gray-500">
               <tr>
                 <th className="px-5 py-4">#</th>
