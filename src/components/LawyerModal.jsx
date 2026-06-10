@@ -86,11 +86,11 @@ function DetailRow({ action, label, value }) {
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-      <dt className="text-xs font-black uppercase tracking-wide text-gray-500">
+    <div className="rounded-lg border border-emerald-900/10 bg-[#e9f4ef] p-4">
+      <dt className="text-xs font-black uppercase tracking-wide text-[#0f6b4a]/60">
         {label}
       </dt>
-      <dd className="mt-2 flex flex-wrap items-center gap-2 break-words text-sm font-bold text-gray-950">
+      <dd className="mt-2 flex flex-wrap items-center gap-2 break-words text-sm font-bold text-[#0f6b4a]">
         <span>{value}</span>
         {action}
       </dd>
@@ -107,15 +107,15 @@ function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
   const licenceNumber = getLicenceNumber(lawyer);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-gray-950/75 px-3 py-3 backdrop-blur-sm sm:items-center sm:px-4 sm:py-6">
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-emerald-950/75 px-3 py-3 backdrop-blur-sm sm:items-center sm:px-4 sm:py-6">
       <section className="max-h-[92vh] w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-2xl ring-1 ring-white/20">
-        <div className="flex items-start justify-between gap-4 border-b border-gray-200 bg-gray-950 px-4 py-4 sm:px-6 sm:py-5">
+        <div className="flex items-start justify-between gap-4 border-b border-emerald-900/10 bg-[#0f6b4a] px-4 py-4 sm:px-6 sm:py-5">
           <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-sm font-black text-white sm:h-12 sm:w-12">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-sm font-black text-[#0f6b4a] sm:h-12 sm:w-12">
               {getLawyerName(lawyer).slice(0, 1).toUpperCase()}
             </span>
             <div className="min-w-0">
-              <p className="text-xs font-bold uppercase tracking-wide text-blue-300 sm:text-sm">
+              <p className="text-xs font-bold uppercase tracking-wide text-emerald-100 sm:text-sm">
                 Lawyer Profile
               </p>
               <h2 className="mt-1 truncate text-xl font-black text-white sm:text-2xl">
@@ -124,7 +124,7 @@ function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
             </div>
           </div>
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-md text-xl font-black text-gray-400 transition hover:bg-white/10 hover:text-white"
+            className="flex h-9 w-9 items-center justify-center rounded-md text-xl font-black text-emerald-100 transition hover:bg-white/10 hover:text-white"
             type="button"
             aria-label="Close modal"
             onClick={onClose}
@@ -142,7 +142,7 @@ function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
               action={
                 licenceNumber !== "N/A" ? (
                   <button
-                    className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs font-black text-gray-600 transition hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700"
+                    className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-black text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
                     type="button"
                     onClick={() => onCopyLicence(licenceNumber)}
                   >
@@ -160,8 +160,8 @@ function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
             />
           </dl>
 
-          <div className="mt-5 rounded-lg border border-gray-200 bg-gray-50 p-4">
-            <p className="text-xs font-black uppercase tracking-wide text-gray-500">
+          <div className="mt-5 rounded-lg border border-emerald-900/10 bg-[#e9f4ef] p-4">
+            <p className="text-xs font-black uppercase tracking-wide text-[#0f6b4a]/60">
               Current Status
             </p>
             <span
@@ -173,9 +173,9 @@ function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
           </div>
         </div>
 
-        <div className="flex flex-col-reverse gap-3 border-t border-gray-200 bg-gray-50 px-4 py-4 sm:flex-row sm:justify-end sm:px-6">
+        <div className="flex flex-col-reverse gap-3 border-t border-emerald-900/10 bg-[#e9f4ef] px-4 py-4 sm:flex-row sm:justify-end sm:px-6">
           <button
-            className="rounded-md bg-green-600 px-4 py-2.5 text-sm font-black text-white shadow-sm transition hover:bg-green-700"
+            className="rounded-full bg-[#0f6b4a] px-4 py-2.5 text-sm font-black text-white shadow-sm transition hover:bg-[#0b573c]"
             type="button"
             onClick={() => onApprove(lawyer)}
           >
