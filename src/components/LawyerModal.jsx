@@ -54,6 +54,10 @@ function getLicenceNumber(lawyer) {
   );
 }
 
+function getLawyerId(lawyer) {
+  return lawyer.lawyerId || lawyer.lawyerID || lawyer.lawyer_id || "N/A";
+}
+
 function getBarCouncil(lawyer) {
   return lawyer.barCouncil || lawyer.barCouncilName || lawyer.council || "N/A";
 }
@@ -98,13 +102,21 @@ function DetailRow({ action, label, value }) {
   );
 }
 
-function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
+function LawyerModal({
+  lawyer,
+  onApprove,
+  onClose,
+  onCopyLawyerId,
+  onCopyLicence,
+  onReject,
+}) {
   if (!lawyer) {
     return null;
   }
 
   const status = getStatus(lawyer);
   const licenceNumber = getLicenceNumber(lawyer);
+  const lawyerId = getLawyerId(lawyer);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-emerald-950/75 px-3 py-3 backdrop-blur-sm sm:items-center sm:px-4 sm:py-6">
@@ -152,6 +164,21 @@ function LawyerModal({ lawyer, onApprove, onClose, onCopyLicence, onReject }) {
               }
               label="Licence Number"
               value={licenceNumber}
+            />
+            <DetailRow
+              action={
+                lawyerId !== "N/A" ? (
+                  <button
+                    className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-black text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
+                    type="button"
+                    onClick={() => onCopyLawyerId(lawyerId)}
+                  >
+                    Copy
+                  </button>
+                ) : null
+              }
+              label="Lawyer ID"
+              value={lawyerId}
             />
             <DetailRow label="Bar Council" value={getBarCouncil(lawyer)} />
             <DetailRow

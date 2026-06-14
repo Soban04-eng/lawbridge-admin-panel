@@ -68,6 +68,10 @@ function getLicenceNo(lawyer) {
   );
 }
 
+function getLawyerId(lawyer) {
+  return lawyer.lawyerId || lawyer.lawyerID || lawyer.lawyer_id || "N/A";
+}
+
 function getBarCouncil(lawyer) {
   return lawyer.barCouncil || lawyer.barCouncilName || lawyer.council || "N/A";
 }
@@ -101,6 +105,7 @@ function getSearchText(lawyer) {
     getLawyerName(lawyer),
     lawyer.email,
     getLicenceNo(lawyer),
+    getLawyerId(lawyer),
     getBarCouncil(lawyer),
   ]
     .filter(Boolean)
@@ -186,6 +191,20 @@ function LawyerTable() {
     }
   };
 
+  const copyLawyerId = async (lawyerId) => {
+    if (!lawyerId || lawyerId === "N/A") {
+      showSuccessToast("No lawyer ID available.");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(lawyerId);
+      showSuccessToast("Lawyer ID copied.");
+    } catch {
+      showSuccessToast("Unable to copy lawyer ID.");
+    }
+  };
+
   const approveLawyer = async (lawyer) => {
     await update(ref(db, `lawyers/${getApprovalKey(lawyer)}`), {
       isApproved: true,
@@ -226,7 +245,7 @@ function LawyerTable() {
             <input
               className="w-full rounded-lg border border-[#7b9288] bg-[#f6fbf8] px-4 py-3 text-sm font-medium text-[#0f6b4a] outline-none transition placeholder:text-[#6aa18c] focus:border-[#0f6b4a] focus:bg-white focus:ring-2 focus:ring-[#0f6b4a]/20 lg:max-w-md"
               type="search"
-              placeholder="Search by name, email, licence number, or bar council"
+              placeholder="Search by name, email, licence number, lawyer ID, or bar council"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
             />
@@ -263,6 +282,7 @@ function LawyerTable() {
           {filteredLawyers.map((lawyer, index) => {
             const status = getStatus(lawyer);
             const licenceNumber = getLicenceNo(lawyer);
+            const lawyerId = getLawyerId(lawyer);
 
             return (
               <article
@@ -291,19 +311,39 @@ function LawyerTable() {
                 <div className="mt-4 grid gap-3 text-sm">
                   <div>
                     <p className="text-xs font-black uppercase tracking-wide text-[#0f6b4a]/60">
-                      Licence No
+                      Licence No / Lawyer ID
                     </p>
-                    <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <span className="font-bold text-[#0f6b4a]">{licenceNumber}</span>
-                      {licenceNumber !== "N/A" && (
-                        <button
-                          className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
-                          type="button"
-                          onClick={() => copyLicenceNumber(licenceNumber)}
-                        >
-                          Copy
-                        </button>
-                      )}
+                    <div className="mt-1 grid gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-black uppercase text-[#0f6b4a]/60">
+                          Licence
+                        </span>
+                        <span className="font-bold text-[#0f6b4a]">{licenceNumber}</span>
+                        {licenceNumber !== "N/A" && (
+                          <button
+                            className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
+                            type="button"
+                            onClick={() => copyLicenceNumber(licenceNumber)}
+                          >
+                            Copy
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-black uppercase text-[#0f6b4a]/60">
+                          Lawyer ID
+                        </span>
+                        <span className="font-bold text-[#0f6b4a]">{lawyerId}</span>
+                        {lawyerId !== "N/A" && (
+                          <button
+                            className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
+                            type="button"
+                            onClick={() => copyLawyerId(lawyerId)}
+                          >
+                            Copy
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -377,7 +417,7 @@ function LawyerTable() {
                 <th className="px-5 py-4">#</th>
                 <th className="px-5 py-4">Name</th>
                 <th className="px-5 py-4">Email</th>
-                <th className="px-5 py-4">Licence No</th>
+                <th className="px-5 py-4">Licence / Lawyer ID</th>
                 <th className="px-5 py-4">Bar Council</th>
                 <th className="px-5 py-4">Registered</th>
                 <th className="px-5 py-4">Status</th>
@@ -388,6 +428,7 @@ function LawyerTable() {
               {filteredLawyers.map((lawyer, index) => {
                 const status = getStatus(lawyer);
                 const licenceNumber = getLicenceNo(lawyer);
+                const lawyerId = getLawyerId(lawyer);
 
                 return (
                   <tr
@@ -411,20 +452,43 @@ function LawyerTable() {
                       {lawyer.email || "N/A"}
                     </td>
                     <td className="px-5 py-4">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-[#0f6b4a]">
-                          {licenceNumber}
-                        </span>
-                        {licenceNumber !== "N/A" && (
-                          <button
-                            className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
-                            type="button"
-                            onClick={() => copyLicenceNumber(licenceNumber)}
-                            title="Copy licence number"
-                          >
-                            Copy
-                          </button>
-                        )}
+                      <div className="grid gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className="w-16 text-xs font-black uppercase text-[#0f6b4a]/60">
+                            Licence
+                          </span>
+                          <span className="font-bold text-[#0f6b4a]">
+                            {licenceNumber}
+                          </span>
+                          {licenceNumber !== "N/A" && (
+                            <button
+                              className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
+                              type="button"
+                              onClick={() => copyLicenceNumber(licenceNumber)}
+                              title="Copy licence number"
+                            >
+                              Copy
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-16 text-xs font-black uppercase text-[#0f6b4a]/60">
+                            Lawyer ID
+                          </span>
+                          <span className="font-bold text-[#0f6b4a]">
+                            {lawyerId}
+                          </span>
+                          {lawyerId !== "N/A" && (
+                            <button
+                              className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
+                              type="button"
+                              onClick={() => copyLawyerId(lawyerId)}
+                              title="Copy lawyer ID"
+                            >
+                              Copy
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </td>
                     <td className="px-5 py-4 font-medium">{getBarCouncil(lawyer)}</td>
@@ -485,6 +549,7 @@ function LawyerTable() {
         lawyer={selectedLawyer}
         onApprove={approveLawyer}
         onClose={() => setSelectedLawyer(null)}
+        onCopyLawyerId={copyLawyerId}
         onCopyLicence={copyLicenceNumber}
         onReject={rejectLawyer}
       />
