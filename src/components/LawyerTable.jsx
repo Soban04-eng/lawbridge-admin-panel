@@ -72,6 +72,18 @@ function getLawyerId(lawyer) {
   return lawyer.lawyerId || lawyer.lawyerID || lawyer.lawyer_id || "N/A";
 }
 
+function getCnic(lawyer) {
+  return (
+    lawyer.cnic ||
+    lawyer.CNIC ||
+    lawyer.cnicNo ||
+    lawyer.cnicNumber ||
+    lawyer.nationalId ||
+    lawyer.nationalID ||
+    "N/A"
+  );
+}
+
 function getBarCouncil(lawyer) {
   return lawyer.barCouncil || lawyer.barCouncilName || lawyer.council || "N/A";
 }
@@ -106,6 +118,7 @@ function getSearchText(lawyer) {
     lawyer.email,
     getLicenceNo(lawyer),
     getLawyerId(lawyer),
+    getCnic(lawyer),
     getBarCouncil(lawyer),
   ]
     .filter(Boolean)
@@ -115,6 +128,7 @@ function getSearchText(lawyer) {
 
 function LawyerTable() {
   const [lawyers, setLawyers] = useState([]);
+  const [users, setUsers] = useState({});
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLawyer, setSelectedLawyer] = useState(null);
@@ -131,6 +145,25 @@ function LawyerTable() {
       setLawyers(nextLawyers);
     });
 
+    const unsubscribeUsers = onSnapshot(collection(firestoreDb, "users"), (snapshot) => {
+      const nextUsers = snapshot.docs.reduce((profiles, document) => {
+        const user = {
+          id: document.id,
+          ...document.data(),
+        };
+
+        profiles[document.id] = user;
+
+        if (user.uid) {
+          profiles[user.uid] = user;
+        }
+
+        return profiles;
+      }, {});
+
+      setUsers(nextUsers);
+    });
+
     const approvalsRef = ref(db, "lawyers/");
     const unsubscribeDatabase = onValue(approvalsRef, (snapshot) => {
       setApprovals(snapshot.val() || {});
@@ -138,18 +171,24 @@ function LawyerTable() {
 
     return () => {
       unsubscribeFirestore();
+      unsubscribeUsers();
       unsubscribeDatabase();
     };
   }, []);
 
   const mergedLawyers = useMemo(
     () =>
-      lawyers.map((lawyer) => ({
-        ...lawyer,
-        ...(approvals[getApprovalKey(lawyer)] || {}),
-        id: lawyer.id,
-      })),
-    [approvals, lawyers],
+      lawyers.map((lawyer) => {
+        const userProfile = users[lawyer.uid] || users[lawyer.id] || {};
+
+        return {
+          ...userProfile,
+          ...lawyer,
+          ...(approvals[getApprovalKey(lawyer)] || {}),
+          id: lawyer.id,
+        };
+      }),
+    [approvals, lawyers, users],
   );
 
   const pendingCount = useMemo(
@@ -205,6 +244,20 @@ function LawyerTable() {
     }
   };
 
+  const copyCnic = async (cnic) => {
+    if (!cnic || cnic === "N/A") {
+      showSuccessToast("No CNIC available.");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(cnic);
+      showSuccessToast("CNIC copied.");
+    } catch {
+      showSuccessToast("Unable to copy CNIC.");
+    }
+  };
+
   const approveLawyer = async (lawyer) => {
     await update(ref(db, `lawyers/${getApprovalKey(lawyer)}`), {
       isApproved: true,
@@ -245,7 +298,7 @@ function LawyerTable() {
             <input
               className="w-full rounded-lg border border-[#7b9288] bg-[#f6fbf8] px-4 py-3 text-sm font-medium text-[#0f6b4a] outline-none transition placeholder:text-[#6aa18c] focus:border-[#0f6b4a] focus:bg-white focus:ring-2 focus:ring-[#0f6b4a]/20 lg:max-w-md"
               type="search"
-              placeholder="Search by name, email, licence number, lawyer ID, or bar council"
+              placeholder="Search by name, email, licence number, lawyer ID, CNIC, or bar council"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
             />
@@ -283,6 +336,7 @@ function LawyerTable() {
             const status = getStatus(lawyer);
             const licenceNumber = getLicenceNo(lawyer);
             const lawyerId = getLawyerId(lawyer);
+            const cnic = getCnic(lawyer);
 
             return (
               <article
@@ -311,7 +365,7 @@ function LawyerTable() {
                 <div className="mt-4 grid gap-3 text-sm">
                   <div>
                     <p className="text-xs font-black uppercase tracking-wide text-[#0f6b4a]/60">
-                      Licence No / Lawyer ID
+                      Licence No / Lawyer ID / CNIC
                     </p>
                     <div className="mt-1 grid gap-2">
                       <div className="flex flex-wrap items-center gap-2">
@@ -339,6 +393,21 @@ function LawyerTable() {
                             className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
                             type="button"
                             onClick={() => copyLawyerId(lawyerId)}
+                          >
+                            Copy
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-black uppercase text-[#0f6b4a]/60">
+                          CNIC
+                        </span>
+                        <span className="font-bold text-[#0f6b4a]">{cnic}</span>
+                        {cnic !== "N/A" && (
+                          <button
+                            className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
+                            type="button"
+                            onClick={() => copyCnic(cnic)}
                           >
                             Copy
                           </button>
@@ -417,7 +486,7 @@ function LawyerTable() {
                 <th className="px-5 py-4">#</th>
                 <th className="px-5 py-4">Name</th>
                 <th className="px-5 py-4">Email</th>
-                <th className="px-5 py-4">Licence / Lawyer ID</th>
+                <th className="px-5 py-4">Licence / Lawyer ID / CNIC</th>
                 <th className="px-5 py-4">Bar Council</th>
                 <th className="px-5 py-4">Registered</th>
                 <th className="px-5 py-4">Status</th>
@@ -429,6 +498,7 @@ function LawyerTable() {
                 const status = getStatus(lawyer);
                 const licenceNumber = getLicenceNo(lawyer);
                 const lawyerId = getLawyerId(lawyer);
+                const cnic = getCnic(lawyer);
 
                 return (
                   <tr
@@ -484,6 +554,24 @@ function LawyerTable() {
                               type="button"
                               onClick={() => copyLawyerId(lawyerId)}
                               title="Copy lawyer ID"
+                            >
+                              Copy
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-16 text-xs font-black uppercase text-[#0f6b4a]/60">
+                            CNIC
+                          </span>
+                          <span className="font-bold text-[#0f6b4a]">
+                            {cnic}
+                          </span>
+                          {cnic !== "N/A" && (
+                            <button
+                              className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-bold text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
+                              type="button"
+                              onClick={() => copyCnic(cnic)}
+                              title="Copy CNIC"
                             >
                               Copy
                             </button>
@@ -549,6 +637,7 @@ function LawyerTable() {
         lawyer={selectedLawyer}
         onApprove={approveLawyer}
         onClose={() => setSelectedLawyer(null)}
+        onCopyCnic={copyCnic}
         onCopyLawyerId={copyLawyerId}
         onCopyLicence={copyLicenceNumber}
         onReject={rejectLawyer}
