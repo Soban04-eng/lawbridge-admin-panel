@@ -2,10 +2,10 @@ import Navbar from "../components/Navbar.jsx";
 import StatsBar from "../components/StatsBar.jsx";
 import LawyerTable from "../components/LawyerTable.jsx";
 
-function Dashboard() {
+function Dashboard({ onLogout }) {
   return (
     <main className="min-h-screen bg-white">
-      <Navbar />
+      <Navbar onLogout={onLogout} />
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-3 py-4 sm:gap-6 sm:px-6 sm:py-6 lg:px-8">
         <section className="rounded-lg border border-emerald-900/10 bg-[#e9f4ef] px-4 py-4 shadow-sm sm:px-5 sm:py-5">
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
