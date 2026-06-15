@@ -58,6 +58,18 @@ function getLawyerId(lawyer) {
   return lawyer.lawyerId || lawyer.lawyerID || lawyer.lawyer_id || "N/A";
 }
 
+function getCnic(lawyer) {
+  return (
+    lawyer.cnic ||
+    lawyer.CNIC ||
+    lawyer.cnicNo ||
+    lawyer.cnicNumber ||
+    lawyer.nationalId ||
+    lawyer.nationalID ||
+    "N/A"
+  );
+}
+
 function getBarCouncil(lawyer) {
   return lawyer.barCouncil || lawyer.barCouncilName || lawyer.council || "N/A";
 }
@@ -106,6 +118,7 @@ function LawyerModal({
   lawyer,
   onApprove,
   onClose,
+  onCopyCnic,
   onCopyLawyerId,
   onCopyLicence,
   onReject,
@@ -117,6 +130,7 @@ function LawyerModal({
   const status = getStatus(lawyer);
   const licenceNumber = getLicenceNumber(lawyer);
   const lawyerId = getLawyerId(lawyer);
+  const cnic = getCnic(lawyer);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-emerald-950/75 px-3 py-3 backdrop-blur-sm sm:items-center sm:px-4 sm:py-6">
@@ -179,6 +193,21 @@ function LawyerModal({
               }
               label="Lawyer ID"
               value={lawyerId}
+            />
+            <DetailRow
+              action={
+                cnic !== "N/A" ? (
+                  <button
+                    className="rounded-full border border-[#0f6b4a]/20 bg-white px-2 py-1 text-xs font-black text-[#0f6b4a] transition hover:bg-[#e9f4ef]"
+                    type="button"
+                    onClick={() => onCopyCnic(cnic)}
+                  >
+                    Copy
+                  </button>
+                ) : null
+              }
+              label="CNIC"
+              value={cnic}
             />
             <DetailRow label="Bar Council" value={getBarCouncil(lawyer)} />
             <DetailRow
