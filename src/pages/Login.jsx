@@ -1,18 +1,25 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({ isAuthenticated, onLogin }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(location.state?.from?.pathname || "/dashboard", { replace: true });
+    }
+  }, [isAuthenticated, location.state, navigate]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setError("");
 
     if (username === "admin" && password === "12345678") {
-      localStorage.setItem("lawbridgeAdminSession", "true");
+      onLogin();
       navigate("/dashboard", { replace: true });
       return;
     }
