@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ onLogout }) {
   const navigate = useNavigate();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const confirmLogout = () => {
     localStorage.removeItem("lawbridgeAdminSession");
+    sessionStorage.removeItem("lawbridgeAdminSession");
+    onLogout();
     navigate("/", { replace: true });
   };
 
